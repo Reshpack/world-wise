@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useCities } from "../contexts/CitiesContext";
 import styles from "./City.module.css";
+import Spinner from "./Spinner";
+import BackButton from "./BackButton";
 
 const formatDate = (date) =>
   new Intl.DateTimeFormat("en", {
@@ -17,15 +19,17 @@ function City() {
   const { id } = useParams();
   const { getCity, currentCity, isLoading } = useCities();
 
-  useEffect(function () {
-    getCity(id);
-  }, []);
-
-  if (isLoading) return <p>Loading...</p>; // Show loading message
-
-  if (!currentCity) return <p>No city found...</p>; // Handle case where no city is found
+  useEffect(
+    function () {
+      getCity(id);
+    },
+    [id]
+  );
 
   const { cityName, emoji, date, notes } = currentCity;
+  if (!currentCity) return <p>No city found...</p>; // Handle case where no city is found
+
+  if (isLoading) return <Spinner />;
 
   return (
     <div className={styles.city}>
@@ -55,7 +59,9 @@ function City() {
           Check out {cityName} on Wikipedia &rarr;
         </a>
       </div>
-      <div></div>
+      <div>
+        <BackButton />
+      </div>
     </div>
   );
 }
