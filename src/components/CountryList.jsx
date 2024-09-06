@@ -20,10 +20,14 @@ function CountryList() {
       return [...arr, { country: city.country, emoji: city.emoji }];
     else return arr;
   }, []);
+
   return (
     <ul className={styles.countryList}>
-      {countries.map((country) => (
-        <CountryItem country={country} key={country.id} />
+      {countries.map((country, index) => (
+        <CountryItem
+          country={country}
+          key={`${country.country}-${country.emoji}-${index}`}
+        />
       ))}
     </ul>
   );
